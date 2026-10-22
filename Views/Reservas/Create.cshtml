@@ -1,0 +1,79 @@
+@model Hotel.Web.Models.Reserva
+
+@{
+    ViewData["Title"] = "Crear Reserva";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Registrar Nueva Reserva</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdHuesped" class="form-label fw-semibold">Huésped</label>
+                            <select asp-for="IdHuesped" class="form-select" asp-items="ViewBag.IdHuesped">
+                                <option value="">-- Seleccionar Huésped --</option>
+                            </select>
+                            <span asp-validation-for="IdHuesped" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdHabitacion" class="form-label fw-semibold">Habitación</label>
+                            <select asp-for="IdHabitacion" class="form-select" asp-items="ViewBag.IdHabitacion">
+                                <option value="">-- Seleccionar Habitación Activa --</option>
+                            </select>
+                            <span asp-validation-for="IdHabitacion" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FechaIngreso" class="form-label fw-semibold">Fecha de Ingreso</label>
+                                <input asp-for="FechaIngreso" type="date" class="form-control" 
+                                       value="@Model.FechaIngreso.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="FechaIngreso" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FechaSalida" class="form-label fw-semibold">Fecha de Salida</label>
+                                <input asp-for="FechaSalida" type="date" class="form-control" 
+                                       value="@Model.FechaSalida.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="FechaSalida" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Propiedad Observaciones agregada según el paso 13 -->
+                        <div class="mb-3">
+                            <label asp-for="Observaciones" class="form-label fw-semibold">Observaciones</label>
+                            <textarea asp-for="Observaciones" class="form-control" rows="3" maxlength="200" 
+                                      placeholder="Peticiones especiales, horario estimado de llegada, etc. (Máximo 200 caracteres)"></textarea>
+                            <span asp-validation-for="Observaciones" class="text-danger small"></span>
+                        </div>
+
+                        <div class="alert alert-light border">
+                            <small class="text-muted d-block">
+                                * Toda nueva reserva se registrará inicialmente con Estado <strong>Pendiente</strong>.
+                            </small>
+                            <small class="text-muted d-block">
+                                * La fecha de ingreso debe ser de hoy en adelante y la salida debe ser posterior al ingreso.
+                            </small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Regresar al Listado</a>
+                            <button type="submit" class="btn btn-primary">Registrar Reserva</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

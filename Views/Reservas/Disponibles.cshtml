@@ -1,0 +1,112 @@
+@model Hotel.Web.ViewModels.DisponibilidadViewModel
+
+@{
+    ViewData["Title"] = "Consultar Disponibilidad";
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h2 class="fw-bold mb-1"><i class="bi bi-search"></i> Consultar Disponibilidad de Habitaciones</h2>
+        <p class="text-muted">Busca habitaciones activas que no se encuentren reservadas en el rango de fechas indicado</p>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" asp-action="Disponibles" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Fecha de Ingreso:</label>
+                    <input type="date" name="fechaIngreso" class="form-control" 
+                           value="@(Model.FechaIngreso?.ToString("yyyy-MM-dd"))" required />
+                    <span asp-validation-for="FechaIngreso" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Fecha de Salida:</label>
+                    <input type="date" name="fechaSalida" class="form-control" 
+                           value="@(Model.FechaSalida?.ToString("yyyy-MM-dd"))" required />
+                    <span asp-validation-for="FechaSalida" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                    <a asp-action="Disponibles" class="btn btn-outline-secondary">Limpiar</a>
+                </div>
+            </form>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3 mb-0" role="alert">
+                    <div asp-validation-summary="All" class="mb-0"></div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.FechaIngreso.HasValue && Model.FechaSalida.HasValue && ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Rango seleccionado:</strong> Del @Model.FechaIngreso.Value.ToString("dd/MM/yyyy") al @Model.FechaSalida.Value.ToString("dd/MM/yyyy")
+                <span class="badge bg-primary ms-2">@Model.Noches noche(s)</span>
+            </div>
+            <div>
+                <strong>@Model.Habitaciones.Count</strong> habitación(es) disponible(s) encontrada(s).
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Habitación</th>
+                            <th>Piso</th>
+                            <th>Tipo</th>
+                            <th>Capacidad</th>
+                            <th>Precio por Noche</th>
+                            <th>Noches</th>
+                            <th>Total Estimado</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Habitaciones.Any())
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                    No hay habitaciones disponibles para el rango de fechas indicado.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.Habitaciones)
+                            {
+                                <tr>
+                                    <td class="fw-bold">Hab. @item.Habitacion.Numero</td>
+                                    <td>Piso @item.Habitacion.Piso</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">
+                                            @item.Habitacion.IdTipoHabitacionNavigation.Nombre
+                                        </span>
+                                    </td>
+                                    <td>@item.Habitacion.IdTipoHabitacionNavigation.Capacidad persona(s)</td>
+                                    <td>S/. @item.Habitacion.IdTipoHabitacionNavigation.PrecioNoche.ToString("F2")</td>
+                                    <td>@item.Noches</td>
+                                    <td class="fw-bold text-success fs-6">S/. @item.TotalEstimado.ToString("F2")</td>
+                                    <td class="text-end">
+                                        <a asp-action="Create" 
+                                           asp-route-idHabitacion="@item.Habitacion.IdHabitacion" 
+                                           asp-route-fechaIngreso="@Model.FechaIngreso.Value.ToString("yyyy-MM-dd")" 
+                                           asp-route-fechaSalida="@Model.FechaSalida.Value.ToString("yyyy-MM-dd")" 
+                                           class="btn btn-sm btn-success">
+                                            Reservar
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

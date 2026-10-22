@@ -1,0 +1,46 @@
+@model Hotel.Web.Models.Habitacion
+
+@{
+    ViewData["Title"] = "Detalle de Habitación";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Detalle de Habitación #@Model.Numero</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Número:</dt>
+                        <dd class="col-sm-8 fw-bold">@Model.Numero</dd>
+
+                        <dt class="col-sm-4 text-muted">Piso:</dt>
+                        <dd class="col-sm-8">Piso @Model.Piso</dd>
+
+                        <dt class="col-sm-4 text-muted">Tipo de Habitación:</dt>
+                        <dd class="col-sm-8">@Model.IdTipoHabitacionNavigation.Nombre</dd>
+
+                        <dt class="col-sm-4 text-muted">Capacidad:</dt>
+                        <dd class="col-sm-8">@Model.IdTipoHabitacionNavigation.Capacidad personas</dd>
+
+                        <dt class="col-sm-4 text-muted">Precio por Noche:</dt>
+                        <dd class="col-sm-8 text-success fw-bold">S/. @Model.IdTipoHabitacionNavigation.PrecioNoche.ToString("F2")</dd>
+
+                        <dt class="col-sm-4 text-muted">Estado:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge @(Model.Activo ? "bg-success" : "bg-danger")">
+                                @(Model.Activo ? "Activa" : "Inactiva")
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Regresar</a>
+                    <a asp-action="Edit" asp-route-id="@Model.IdHabitacion" class="btn btn-warning">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
