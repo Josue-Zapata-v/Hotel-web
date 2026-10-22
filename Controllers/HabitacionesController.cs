@@ -125,7 +125,7 @@ public class HabitacionesController : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         await _repositorio.EliminarLogicoAsync(id);
-        TempData["Mensaje"] = "Habitación desactivada (eliminación lógica) exitosamente.";
+        TempData["Mensaje"] = "La habitación ha sido desactivada correctamente y ya no estará disponible para nuevas reservas.";
         return RedirectToAction(nameof(Index));
     }
 

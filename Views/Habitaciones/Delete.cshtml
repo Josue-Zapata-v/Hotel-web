@@ -1,40 +1,51 @@
 @model Hotel.Web.Models.Habitacion
 
 @{
-    ViewData["Title"] = "Eliminar Habitación";
+    ViewData["Title"] = "Desactivar Habitación";
 }
 
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-7">
-            <div class="card shadow-sm border-danger">
-                <div class="card-header bg-danger text-white">
-                    <h4 class="mb-0">Confirmar Eliminación Lógica</h4>
+            <div class="card shadow-sm border-warning">
+                <div class="card-header bg-warning text-dark d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 fw-bold">¿Desea dar de baja esta habitación?</h5>
+                    <span class="badge bg-dark">Habitación #@Model.Numero</span>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-warning">
-                        <strong>Atención:</strong> Esta acción desactivará la habitación (eliminación lógica con <code>Activo = 0</code>). No se borrará físicamente de la base de datos.
+                    <div class="alert alert-light border-warning text-dark mb-4">
+                        <p class="mb-1 fw-semibold">Información importante:</p>
+                        <ul class="mb-0 small ps-3">
+                            <li>La habitación <strong>no se eliminará del sistema</strong>, pero dejará de estar disponible para nuevas reservas y búsquedas.</li>
+                            <li>Todo el historial de reservas y registros pasados se mantendrá seguro e intacto.</li>
+                        </ul>
                     </div>
 
-                    <dl class="row mb-0">
-                        <dt class="col-sm-4 text-muted">Número:</dt>
-                        <dd class="col-sm-8 fw-bold">@Model.Numero</dd>
+                    <div class="bg-light p-3 rounded mb-3">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4 text-muted">Habitación:</dt>
+                            <dd class="col-sm-8 fw-bold">Número @Model.Numero</dd>
 
-                        <dt class="col-sm-4 text-muted">Piso:</dt>
-                        <dd class="col-sm-8">Piso @Model.Piso</dd>
+                            <dt class="col-sm-4 text-muted">Ubicación:</dt>
+                            <dd class="col-sm-8">Piso @Model.Piso</dd>
 
-                        <dt class="col-sm-4 text-muted">Tipo:</dt>
-                        <dd class="col-sm-8">@Model.IdTipoHabitacionNavigation.Nombre</dd>
+                            <dt class="col-sm-4 text-muted">Tipo:</dt>
+                            <dd class="col-sm-8">@Model.IdTipoHabitacionNavigation.Nombre</dd>
 
-                        <dt class="col-sm-4 text-muted">Precio por Noche:</dt>
-                        <dd class="col-sm-8">S/. @Model.IdTipoHabitacionNavigation.PrecioNoche.ToString("F2")</dd>
-                    </dl>
+                            <dt class="col-sm-4 text-muted">Tarifa:</dt>
+                            <dd class="col-sm-8 fw-bold text-success">S/. @Model.IdTipoHabitacionNavigation.PrecioNoche.ToString("F2") por noche</dd>
+                        </dl>
+                    </div>
                 </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-                    <form asp-action="Delete" method="post">
+                <div class="card-footer d-flex justify-content-between bg-white py-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Cancelar y Volver
+                    </a>
+                    <form asp-action="Delete" method="post" class="m-0">
                         <input type="hidden" asp-for="IdHabitacion" />
-                        <button type="submit" class="btn btn-danger">Confirmar Desactivación</button>
+                        <button type="submit" class="btn btn-danger">
+                            Sí, Desactivar Habitación
+                        </button>
                     </form>
                 </div>
             </div>
